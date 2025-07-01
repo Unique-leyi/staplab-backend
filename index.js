@@ -6,6 +6,7 @@ const cors = require("cors");
 const sequelize = require("./config/db.js"); 
 const config = require("./config/index.js");
 const cookieParser = require("cookie-parser");
+// const seedResearchs = require("./seeds/seedResearchs");
 
 const app = express();
 const { port } = config;
@@ -37,6 +38,9 @@ app.listen(port, async () => {
     await sequelize.sync({ force: false });
     console.log('Database models synced');
     console.log(`Server running at http://localhost:${port}`);
+
+    // Seed Researchs data
+    // await seedResearchs();
   } catch (err) {
     console.error('Error syncing database:', err.message);
   }
