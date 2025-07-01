@@ -14,14 +14,12 @@ module.exports = app => {
   // Get all team members
   router.get(
     "/all-teams",
-    authenticateToken,
     team.getAllTeams
   );
 
   // Get a single team member by ID
   router.get(
     "/get-team/:id",
-    authenticateToken,
     team.getTeamById
   );
 

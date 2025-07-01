@@ -16,14 +16,12 @@ module.exports = app => {
   // Get all post posts
   router.get(
     "/all-posts",
-    authenticateToken,
     post.getAllPosts
   );
 
   // Get a single post post by ID
   router.get(
     "/get-post/:id",
-    authenticateToken,
     post.getPostById
   );
 

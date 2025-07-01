@@ -16,14 +16,12 @@ module.exports = app => {
   // Get all research entries
   router.get(
     "/all-researchs",
-    authenticateToken,
     research.getAllResearch
   );
 
   // Get a single research entry by ID
   router.get(
     "/get-research/:id",
-    authenticateToken,
     research.getResearchById
   );
 
