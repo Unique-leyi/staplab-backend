@@ -3,7 +3,7 @@ const Team = require('../models/team.model');
 // Create a new team member
 exports.createTeam = async (req, res) => {
   try {
-    const { name, occupation, title, image, comment, affiliation, status } = req.body;
+    const { name, occupation, title, image, comment, affiliation, status, twitter_url, facebook_url, linkedin_url, instagram_url } = req.body;
     
     // Validate required fields
     if (!name || !occupation || !title || !image || !comment || !affiliation || !status) {
@@ -22,7 +22,11 @@ exports.createTeam = async (req, res) => {
       image,
       comment,
       affiliation,
-      status
+      status,
+      twitter_url, 
+      facebook_url, 
+      linkedin_url, 
+      instagram_url
     });
 
     res.status(201).json(team);
@@ -57,7 +61,9 @@ exports.getTeamById = async (req, res) => {
 // Update a team member
 exports.updateTeam = async (req, res) => {
   try {
-    const { name, occupation, title, image, comment, affiliation, status } = req.body;
+    const { name, occupation, title, image, comment, affiliation, status, twitter_url, facebook_url, linkedin_url, instagram_url } = req.body;
+
+
     const team = await Team.findByPk(req.params.id);
 
     if (!team) {
@@ -69,18 +75,37 @@ exports.updateTeam = async (req, res) => {
       return res.status(400).json({ error: 'Invalid status value' });
     }
 
-    await team.update({
-      name: name || team.name,
-      occupation: occupation || team.occupation,
-      title: title || team.title,
-      image: image || team.image,
-      comment: comment || team.comment,
-      affiliation: affiliation || team.affiliation,
-      status: status || team.status
+
+    const updateData = {};
+    if (name !== undefined) updateData.name = name;
+    if (occupation !== undefined) updateData.occupation = occupation;
+    if (title !== undefined) updateData.title = title;
+    if (image !== undefined) updateData.image = image;
+    if (comment !== undefined) updateData.comment = comment;
+    if (affiliation !== undefined) updateData.affiliation = affiliation;
+    if (status !== undefined) updateData.status = status;
+    if (twitter_url !== undefined) updateData.twitter_url = twitter_url;
+    if (facebook_url !== undefined) updateData.facebook_url = facebook_url;
+    if (linkedin_url !== undefined) updateData.linkedin_url = linkedin_url;
+    if (instagram_url !== undefined) updateData.instagram_url = instagram_url;
+
+
+    // Update the team member
+    const [updatedRowsCount] = await Team.update(updateData, {
+      where: { id: req.params.id },
+      returning: true
     });
 
-    res.status(200).json(team);
+    if (updatedRowsCount === 0) {
+      return res.status(400).json({ error: 'No changes made to team member' });
+    }
+
+    // Fetch the updated team member
+    const updatedTeam = await Team.findByPk(req.params.id);
+
+    res.status(200).json(updatedTeam);
   } catch (error) {
+    console.error('Update error:', error);
     res.status(500).json({ error: error.message });
   }
 };
