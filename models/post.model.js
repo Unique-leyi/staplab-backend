@@ -1,4 +1,3 @@
-
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db'); 
 
@@ -30,6 +29,12 @@ const Post = sequelize.define('Post', {
     type: DataTypes.JSON, 
     allowNull: false,
     defaultValue: []
+  },
+  paragraphs: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: [],
+    comment: 'Array of paragraph objects with content, image, imageCaption, and imagePublicId'
   }
 }, {
   timestamps: true, 

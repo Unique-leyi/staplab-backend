@@ -32,6 +32,12 @@ const Research = sequelize.define('Research', {
   author: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  paragraphs: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: [],
+    comment: 'Array of paragraph objects with content, image, imageCaption, and imagePublicId'
   }
 }, {
   timestamps: true, 
